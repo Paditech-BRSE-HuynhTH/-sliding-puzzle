@@ -1,0 +1,156 @@
+/* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║                                                                          ║
+   ║   FILE: styles.css                                                       ║
+   ║   MÔ TẢ: Các style CSS tùy chỉnh cho game Sliding Puzzle                ║
+   ║                                                                          ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ==================== 1. FONT CHỮ ==================== 
+   
+   Giải thích đơn giản:
+   - Giống như chọn kiểu chữ viết cho cả trang web
+   - Font "Nunito" trông tròn trịa, dễ đọc
+   - sans-serif là font dự phòng nếu Nunito không load được
+*/
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+
+/* ==================== 2. HIỆU ỨNG CHO CÁC Ô SỐ ==================== 
+   
+   Giải thích đơn giản:
+   - .tile là tên gọi cho mỗi ô số trong game
+   - transition: làm cho thay đổi diễn ra từ từ, không đột ngột
+   - 0.15s = 0.15 giây (rất nhanh, nhưng mượt mà)
+   - ease-out = bắt đầu nhanh, kết thúc chậm (như xe phanh)
+*/
+.tile {
+    transition: all 0.15s ease-out;
+}
+
+
+/* ==================== 3. HIỆU ỨNG KHI RÊ CHUỘT VÀO Ô ==================== 
+   
+   Giải thích đơn giản:
+   - :hover = khi chuột di chuyển lên trên ô
+   - transform: scale(1.02) = phóng to lên 2% (1.02 = 102%)
+   - Tạo cảm giác ô "nổi lên" khi rê chuột vào
+*/
+.tile:hover {
+    transform: scale(1.02);
+}
+
+
+/* ==================== 4. HIỆU ỨNG KHI BẤM PHÍM ==================== 
+   
+   Giải thích đơn giản:
+   - Khi bấm phím W/A/S/D hoặc mũi tên
+   - Phím đó sẽ "nhấp nháy" để người chơi biết đã bấm
+   - animation = "phim hoạt hình" cho phím
+*/
+.key-pressed {
+    animation: keyPress 0.2s ease;
+}
+
+/* 
+   @keyframes = định nghĩa các "khung hình" của animation
+   
+   0%   = bắt đầu: kích thước bình thường
+   50%  = giữa chừng: thu nhỏ còn 90%, đổi màu vàng
+   100% = kết thúc: trở lại bình thường
+*/
+@keyframes keyPress {
+    0% { 
+        transform: scale(1); 
+    }
+    50% { 
+        transform: scale(0.9); 
+        background-color: #fbbf24;  /* Màu vàng */
+    }
+    100% { 
+        transform: scale(1); 
+    }
+}
+
+
+/* ==================== 5. HIỆU ỨNG CONFETTI KHI THẮNG ==================== 
+   
+   Giải thích đơn giản:
+   - Hiệu ứng "pháo hoa" khi người chơi thắng
+   - Các mảnh giấy bay lên và xoay tròn
+   - (Để dành mở rộng sau)
+*/
+@keyframes confetti {
+    0% { 
+        transform: translateY(0) rotate(0deg); 
+        opacity: 1;  /* Hiện rõ */
+    }
+    100% { 
+        transform: translateY(-100px) rotate(720deg);  /* Bay lên 100px, xoay 2 vòng */
+        opacity: 0;  /* Biến mất */
+    }
+}
+
+.confetti {
+    animation: confetti 1s ease-out forwards;
+}
+
+
+/* ==================== 6. STYLE CHO BẢNG LỊCH SỬ ==================== 
+   
+   Giải thích đơn giản:
+   - Làm cho bảng lịch sử trông đẹp hơn
+   - Các hàng xen kẽ màu để dễ đọc
+*/
+#historyBody tr:nth-child(even) {
+    background-color: #f9fafb;  /* Màu xám nhạt cho hàng chẵn */
+}
+
+#historyBody tr:hover {
+    background-color: #f3f4f6;  /* Đổi màu khi rê chuột */
+}
+
+
+/* ==================== 7. STYLE CHO MODAL THẮNG ==================== 
+   
+   Giải thích đơn giản:
+   - Modal = cửa sổ popup hiện lên khi thắng
+   - Có hiệu ứng xuất hiện từ từ
+*/
+#winModal > div {
+    animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* ==================== 8. RESPONSIVE - MÀN HÌNH NHỎ ==================== 
+   
+   Giải thích đơn giản:
+   - @media = "nếu màn hình có kích thước..."
+   - max-width: 640px = màn hình nhỏ hơn 640px (điện thoại)
+   - Điều chỉnh kích thước để vừa màn hình nhỏ
+*/
+@media (max-width: 640px) {
+    /* Thu nhỏ game board trên điện thoại */
+    #gameBoard {
+        width: 300px !important;
+        height: 225px !important;
+    }
+    
+    /* Thu nhỏ chữ số trong ô */
+    .tile {
+        font-size: 1.5rem !important;
+    }
+}
